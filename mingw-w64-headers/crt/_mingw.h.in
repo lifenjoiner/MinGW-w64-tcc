@@ -7,6 +7,31 @@
 #ifndef _INC__MINGW_H
 #define _INC__MINGW_H
 
+
+#define __cdecl __attribute__((__cdecl__))
+#define __declspec(x) __attribute__((x))
+#define __unaligned __attribute__((packed))
+#define __fastcall __attribute__((fastcall))
+#define __stdcall __attribute__((__stdcall__))
+
+#define __NO_ISOCEXT
+#define _CRT_NON_CONFORMING_SWPRINTFS
+
+/* Arch differences, before _mingw_mac.h */
+#ifdef _WIN64
+#define _AMD64_ 1
+#define __x86_64 1
+#define USE_MINGW_SETJMP_TWO_ARGS
+#define mingw_getsp tinyc_getbp
+#define __TRY__
+#else
+#define _X86_ 1
+#define WIN32 1
+#define _USE_32BIT_TIME_T
+#define __TRY__ void __try__(void**), *_sehrec[6]; __try__(_sehrec);
+#endif
+
+
 #include "_mingw_mac.h"
 #include "_mingw_secapi.h"
 
@@ -94,7 +119,7 @@ limitations in handling dllimport attribute.  */
 # endif
 #endif
 
-#if !defined(__MINGW_INTRIN_INLINE) && defined(__GNUC__)
+#if !defined(__MINGW_INTRIN_INLINE) && (defined(__GNUC__) || defined(__TINYC__))
 #define __MINGW_INTRIN_INLINE extern __inline__ __attribute__((__always_inline__,__gnu_inline__))
 #endif
 
@@ -232,7 +257,7 @@ limitations in handling dllimport attribute.  */
 
 #ifndef _INT128_DEFINED
 #define _INT128_DEFINED
-#ifdef __GNUC__
+#if defined(__GNUC__) || defined(__TINYC__)
 #define __int8 char
 #define __int16 short
 #define __int32 int
@@ -249,7 +274,7 @@ typedef int __int128 __attribute__ ((__mode__ (TI)));
 #endif /* __GNUC__ */
 #endif /* _INT128_DEFINED */
 
-#ifdef __GNUC__
+#if defined(__GNUC__) || defined(__TINYC__)
 #define __ptr32
 #define __ptr64
 #ifndef __unaligned
