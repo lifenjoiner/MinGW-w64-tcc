@@ -761,19 +761,13 @@ int vsnprintf (char *__stream, size_t __n, const char *__format, __builtin_va_li
 #pragma push_macro("vsnprintf")
 # undef snprintf
 # undef vsnprintf
-  __attribute__((__format__ (ms_printf, 3, 0))) __MINGW_ATTRIB_NONNULL(3)
-  int __cdecl __ms_vsnprintf(char * __restrict__ d,size_t n,const char * __restrict__ format,va_list arg)
-    __MINGW_ATTRIB_DEPRECATED_MSVC2005 __MINGW_ATTRIB_DEPRECATED_SEC_WARN;
 
   __mingw_ovr
   __attribute__((__format__ (ms_printf, 3, 0))) __MINGW_ATTRIB_NONNULL(3)
   int vsnprintf (char * __restrict__ __stream, size_t __n, const char * __restrict__ __format, va_list __local_argv)
   {
-    return __ms_vsnprintf (__stream, __n, __format, __local_argv);
+    return _vsnprintf (__stream, __n, __format, __local_argv);
   }
-
-  __attribute__((__format__ (ms_printf, 3, 4))) __MINGW_ATTRIB_NONNULL(3)
-  int __cdecl __ms_snprintf(char * __restrict__ s, size_t n, const char * __restrict__  format, ...);
 
 #ifndef __NO_ISOCEXT
 __mingw_ovr
@@ -782,7 +776,7 @@ int snprintf (char * __restrict__ __stream, size_t __n, const char * __restrict_
 {
   int __retval;
   __builtin_va_list __local_argv; __builtin_va_start( __local_argv, __format );
-  __retval = __ms_vsnprintf (__stream, __n, __format, __local_argv);
+  __retval = _vsnprintf (__stream, __n, __format, __local_argv);
   __builtin_va_end( __local_argv );
   return __retval;
 }
