@@ -15,6 +15,7 @@
 
 #define __NO_ISOCEXT
 #define _CRT_NON_CONFORMING_SWPRINTFS
+#define __CRT__NO_INLINE
 
 /* Arch differences, before _mingw_mac.h */
 #ifdef _WIN64
