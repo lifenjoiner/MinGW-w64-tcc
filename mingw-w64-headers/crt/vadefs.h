@@ -29,8 +29,9 @@ extern "C" {
 #define _VA_LIST_DEFINED
 #if defined(__GNUC__)
   typedef __gnuc_va_list va_list;
-#elif defined(_MSC_VER)
+#elif defined(_MSC_VER) || defined(__TINYC__)
   typedef char *  va_list;
+  typedef char *  __builtin_va_list;
 #elif !defined(__WIDL__)
 #error VARARGS not implemented for this compiler
 #endif
@@ -50,7 +51,7 @@ extern "C" {
 #define _crt_va_end(v)		__builtin_va_end(v)
 #define _crt_va_copy(d,s)	__builtin_va_copy(d,s)
 
-#elif defined(_MSC_VER)
+#elif defined(_MSC_VER) || defined(__TINYC__)
 /* MSVC specific */
 
 #if defined(_M_IA64)
@@ -92,6 +93,13 @@ extern "C" {
 #error VARARGS not implemented for this TARGET
 
 #endif /* cpu ifdefs */
+
+#if defined(__TINYC__)
+#define __builtin_va_start(v,l) _crt_va_start(v,l)
+#define __builtin_va_arg(v,l)   _crt_va_arg(v,l)
+#define __builtin_va_end(v)     _crt_va_end(v)
+#define __builtin_va_copy(v,s)  _crt_va_copy(v,s)
+#endif
 
 #endif /* compiler ifdefs */
 
